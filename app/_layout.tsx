@@ -12,6 +12,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "../global.css"
 import { useThemeColor } from '@/hooks/useThemeColor';
 import ThemedView from '@/presentation/shared/ThemedView';
+import ThemedText from '@/presentation/shared/ThemedText';
+import { allRoutes } from '@/constants/Routes';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -38,9 +40,35 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ backgroundColor: backgroundColor, flex: 1 }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <ThemedView margin>
-          <Text className='text-3xl mt-10 text-light-text dark:text-dark-text'>Hola mundo</Text>
-        </ThemedView>
+        <Stack
+          screenOptions={{
+            headerShadowVisible: false,
+            contentStyle: {
+              backgroundColor: backgroundColor
+            },
+            headerStyle: {
+              backgroundColor: backgroundColor
+            }
+          }}
+        >
+          <Stack.Screen
+            name="index"
+            options={{
+              title: ""
+            }}
+          />
+          {
+            allRoutes.map(route => (
+              <Stack.Screen
+                key={route.name}
+                name={route.name}
+                options={{
+                  title: route.title,
+                }}
+              />
+            ))
+          }
+        </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
     </GestureHandlerRootView>
